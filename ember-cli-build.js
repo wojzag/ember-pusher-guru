@@ -8,6 +8,7 @@ module.exports = function(defaults) {
   });
 
   app.import('bower_components/pusher/dist/pusher.js');
+  app.import('bower_components/pusher-test-stub/dist/pusher-test-stub.js');
 
   return app.toTree();
 };
