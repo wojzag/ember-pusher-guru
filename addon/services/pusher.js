@@ -52,7 +52,7 @@ export default Service.extend(Ember.Evented, Checker, {
 
   _setEvent(channel, event) {
     channel.bind(event, (data) => {
-      this.trigger('newEvent', event, data);
+      bind(this, this.trigger('newEvent', event, data));
     });
   },
 
