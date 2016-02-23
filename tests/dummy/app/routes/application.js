@@ -6,6 +6,12 @@ export default Route.extend({
   animalsPusher: inject.service(),
 
   init() {
-    this.get('animals-pusher');
+    this.get('animalsPusher');
+  },
+
+  actions: {
+    triggerEvent(channel, eventName, message) {
+      Pusher.singleton.trigger(channel, eventName, { message: message });
+    }
   }
 });
