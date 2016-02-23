@@ -12,7 +12,7 @@ export default Service.extend(Ember.Evented, Checker, {
   channels: [],
 
   init() {
-    this._super.apply(this, arguments);
+    this._super(...arguments);
     this.set('pusherKey', getOwner(this).resolveRegistration('config:environment').pusherKey);
     this.setup();
   },
