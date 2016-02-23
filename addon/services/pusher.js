@@ -26,7 +26,11 @@ export default Service.extend(Ember.Evented, Checker, {
   },
 
   _handleEvent(action, data) {
-    this[action](data);
+    if (this[action].apply) {
+      this[action](data);
+    } else {
+      error(`No handler for event ${action} in Pusher wrapper`);
+    }
   },
 
   _setSubscriptions() {
