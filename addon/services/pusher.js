@@ -2,9 +2,11 @@ import Ember from 'ember';
 import Checker from 'ember-pusher-guru/mixins/checker';
 import { fetchEvents } from 'ember-pusher-guru/utils/extract-events';
 
-const { getOwner, computed } = Ember;
+const { getOwner, computed, run, Logger, Service } = Ember;
+const { bind } = run;
+const { error } = Logger;
 
-export default Ember.Service.extend(Ember.Evented, Checker, {
+export default Service.extend(Ember.Evented, Checker, {
   pusher: null,
   pusherKey: null,
   channels: [],
