@@ -20,8 +20,7 @@ export default Service.extend(Ember.Evented, Checker, {
   setup() {
     this.checkEnv();
     this.pusher = new window.Pusher(this.get('pusherKey'));
-    const handleEvent = Ember.run.bind(this, this._handleEvent);
-    this.on('newEvent', handleEvent);
+    this.on('newEvent', this._handleEvent);
     this._setSubscriptions();
     this._attachEventsToChannels();
   },
