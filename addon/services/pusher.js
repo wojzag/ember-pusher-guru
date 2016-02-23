@@ -60,5 +60,6 @@ export default Service.extend(Ember.Evented, Checker, {
     if (this.pusher) {
       this.pusher.disconnect();
     }
+    this.off('newEvent', this._handleEvent);
   }
 });
