@@ -1,6 +1,6 @@
 export function fetchEvents(data, channelName) {
-  const channel = data.find((item) => {
+  const channel = data.find((channel) => {
     return Object.keys(channel)[0] === channelName;
   });
-  return channel[channelName] && [];
+  return channel[channelName];
 }
