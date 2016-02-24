@@ -14,7 +14,6 @@ export default Ember.Mixin.create({
   },
 
   _isArray(array) {
-    debugger;
     return Array.isArray(array);
   },
 
