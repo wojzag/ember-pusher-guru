@@ -1,11 +1,6 @@
 export function fetchEvents(data, channelName) {
-  let events = [];
-  let searchedChannel = null;
-  data.forEach((channel) => {
-    searchedChannel = Object.keys(channel)[0];
-    if(searchedChannel === channelName) {
-      events = channel[searchedChannel];
-    }
+  const channel = data.find((item) => {
+    return Object.keys(channel)[0] === channelName;
   });
-  return events
+  return channel[channelName] && [];
 }
