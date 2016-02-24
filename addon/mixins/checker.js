@@ -6,7 +6,7 @@ export default Ember.Mixin.create({
     assert("You need to set pusherKey in environment", !!this.get('pusherKey'));
     assert("You need to include the pusher libraries", !!window.Pusher);
     assert("You need to define channelsData property", !!this.channelsData);
-    assert("channelsData property has a wrong structure", !this._checkDataStructure(this.get('channelsData')));
+    assert("channelsData property has a wrong structure", this._checkDataStructure(this.get('channelsData')));
   },
 
   _checkDataStructure(data) {
