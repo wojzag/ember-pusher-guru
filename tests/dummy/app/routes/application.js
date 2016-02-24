@@ -1,3 +1,4 @@
+/*global Pusher:true*/
 import Ember from 'ember';
 
 const { Route, inject } = Ember;
