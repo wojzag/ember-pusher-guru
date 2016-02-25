@@ -7,6 +7,11 @@ Ember addon for easy integration with [Pusher](https://pusher.com/)
 - mechanism of integration is based on [Ember.Evented](http://emberjs.com/api/classes/Ember.Evented.html)
 - addon is a service which is easy to inject
 
+## Installation
+```bash
+ember install ember-pusher-guru
+```
+
 ## Configuration
 
 Set `pusherKey` value in environment:
@@ -22,11 +27,6 @@ And extend security policy rule:
 contentSecurityPolicy: {
   'connect-src': "'self' ws://ws.pusherapp.com"
 }
-```
-
-## Installation
-```bash
-ember install ember-pusher-guru
 ```
 
 ## Usage
