@@ -29,7 +29,7 @@ contentSecurityPolicy: {
 ember install ember-pusher-guru
 ```
 
-## Using
+## Usage
 
 You need to create own service which must be extended from Pusher service
 
@@ -49,5 +49,16 @@ export default Pusher.extend({
     // actions;
   },
   ...
+});
+```
+
+And then inject your service wherever you want and use `get` for start listen
+```javascript
+export default Route.extend({
+  peoplePusher: inject.service(),
+
+  init() {
+    this.get('peoplePusher');
+  }
 });
 ```
