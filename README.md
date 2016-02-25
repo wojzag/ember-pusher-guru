@@ -1,26 +1,36 @@
 # Ember-pusher-guru
 
-This README outlines the details of collaborating on this Ember addon.
+module for easy integration with Pusher
 
 ## Installation
 
-* `git clone` this repository
-* `npm install`
-* `bower install`
+soon
 
-## Running
+```bash
+ember install ember-pusher-guru
+```
 
-* `ember server`
-* Visit your app at http://localhost:4200.
+## Using
 
-## Running Tests
+You need to create own service which must be extended from Pusher service
 
-* `npm test` (Runs `ember try:testall` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+```javascript
+# my-project/services/people-pusher.js
 
-## Building
+import Pusher from '../services/pusher';
 
-* `ember build`
+export default Pusher.extend({
+  channelsData: [
+                 { channelName1: ['eventName1'] },
+                 { channelName2: ['eventName2', 'eventName3'] }
+                  ...
+                ],
 
-For more information on using ember-cli, visit [http://www.ember-cli.com/](http://www.ember-cli.com/).
+  eventName1(data) {
+    // actions;
+  },
+  ...
+});
+```
+
+Also set proper `pusherKey` property in ENV and add `ws://ws.pusherapp.com` to contentSecurityPolicy in `connect-src` property.

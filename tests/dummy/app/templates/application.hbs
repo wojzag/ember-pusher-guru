@@ -1,3 +1,16 @@
-<h2 id="title">Welcome to Ember</h2>
+<h2 id="title">Dummy Ember Pusher Guru app</h2>
 
-{{outlet}}
+Channel: {{input value=channel}} <br>
+Event: {{input value=eventName}} <br>
+Message: {{input value=message}} <br>
+<br>
+<button type="button"
+        name="button" {{action 'triggerEvent' channel eventName message}}>
+  PUSH event
+</button>
+
+<br><br>
+<hr>
+<br>
+
+Content: <div id="message"></div>
