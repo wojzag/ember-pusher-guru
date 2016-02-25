@@ -1,11 +1,30 @@
 # Ember-pusher-guru
 
-module for easy integration with Pusher
+Ember addon for easy integration with [Pusher](https://pusher.com/)
+
+## Advantages
+
+- mechanism of integration is based on [Ember.Evented](http://emberjs.com/api/classes/Ember.Evented.html)
+- addon is a service which is easy to inject
+
+## Configuration
+
+Set `pusherKey` value in environment:
+```javascript
+// my-project/config/environment.js
+  var ENV = {
+    pusherKey: '49482as87s88s6d9sw74',
+    ...
+```
+
+And extend security policy rule:
+```javascript
+contentSecurityPolicy: {
+  'connect-src': "'self' ws://ws.pusherapp.com"
+}
+```
 
 ## Installation
-
-soon
-
 ```bash
 ember install ember-pusher-guru
 ```
@@ -32,5 +51,3 @@ export default Pusher.extend({
   ...
 });
 ```
-
-Also set proper `pusherKey` property in ENV and add `ws://ws.pusherapp.com` to contentSecurityPolicy in `connect-src` property.
