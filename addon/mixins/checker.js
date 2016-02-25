@@ -10,18 +10,14 @@ export default Ember.Mixin.create({
   },
 
   _checkDataStructure(data) {
-    return (Array.isArray(data) && this._findWrongData(data)) ? true : false
-  },
-
-  _isArray(array) {
-    return Array.isArray(array);
+    return (Array.isArray(data) && this._findWrongData(data));
   },
 
   _findWrongData(array) {
     const wrong = array.find((channel) => {
       return this._nonHashElements(channel) || this._detectEmptyHash(channel) || this._checkMissingEvents(channel);
     });
-    return wrong === undefined ? true : false
+    return wrong === undefined;
   },
 
   _nonHashElements(channel) {
