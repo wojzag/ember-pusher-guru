@@ -62,3 +62,9 @@ export default Route.extend({
   }
 });
 ```
+
+### Private channels
+If you want to set private channel you need to add prefix `private-` to channel name and set endpoint do authorization
+```javascript
+  authEndpoint: 'http://backend.com/auth'
+```
