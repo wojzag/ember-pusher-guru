@@ -2,8 +2,12 @@ import Ember from 'ember';
 import Pusher from 'ember-pusher-guru/services/pusher';
 
 export default Pusher.extend({
-  channelsData: [{ stingray: ['cover'] },
-                 { eel: ['electroshock', 'swim'] }],
+  authEndpoint: 'http://localhost:3000/auth',
+  channelsData: [
+                 { stingray: ['cover'] },
+                 { eel: ['electroshock', 'swim'] },
+                 { 'private-coconut': ['fall'] }
+                ],
 
   cover(data) {
     Ember.$('#message').text(data.message);
@@ -12,6 +16,9 @@ export default Pusher.extend({
     Ember.$('#message').text(data.message);
   },
   swim(data) {
+    Ember.$('#message').text(data.message);
+  },
+  fall(data) {
     Ember.$('#message').text(data.message);
   }
 });
