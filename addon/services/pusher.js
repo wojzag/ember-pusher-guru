@@ -9,7 +9,6 @@ const { error } = Logger;
 export default Service.extend(Ember.Evented, Checker, {
   pusher: null,
   pusherKey: null,
-  channels: [],
 
   init() {
     this._super(...arguments);
@@ -19,10 +18,18 @@ export default Service.extend(Ember.Evented, Checker, {
 
   setup() {
     this.checkEnv();
-    this.pusher = new window.Pusher(this.get('pusherKey'));
+    this.pusher = new Pusher(this.get('pusherKey'), this._findOptions());
     this.on('newEvent', this._handleEvent);
-    this._setSubscriptions();
-    this._attachEventsToChannels();
+    this._setSubscriptionsEndEvents();
+  },
+
+  _findOptions() {
+    const endpoint = this.get('authEndpoint');
+    if(endpoint) {
+      return { authEndpoint: endpoint, authTransport: 'jsonp' };
+    } else {
+      return;
+    }
   },
 
   _handleEvent(action, data) {
@@ -33,11 +40,11 @@ export default Service.extend(Ember.Evented, Checker, {
     }
   },
 
-  _setSubscriptions() {
+  _setSubscriptionsEndEvents() {
     this.get('channelsData').forEach((singleChannel) => {
       const channelName = Object.keys(singleChannel)[0];
       const channel = this._addChannel(channelName);
-      this.get('channels').push(channel);
+      this._attachEventsToChannel(channel, channelName);
     });
   },
 
@@ -45,12 +52,10 @@ export default Service.extend(Ember.Evented, Checker, {
     return this.get('pusher').subscribe(name);
   },
 
-  _attachEventsToChannels() {
-    this.get('channels').forEach((channel) => {
-      const events = fetchEvents(this.get('channelsData'), channel.name);
-      events.forEach((event) => {
-        this._setEvent(channel, event);
-      });
+  _attachEventsToChannel(channel, channelName) {
+    const events = fetchEvents(this.get('channelsData'), channelName);
+    events.forEach((event) => {
+      this._setEvent(channel, event);
     });
   },
 
