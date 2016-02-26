@@ -1,7 +1,7 @@
 {
   "name": "ember-pusher-guru",
-  "version": "0.0.0",
-  "description": "The default blueprint for ember-cli addons.",
+  "version": "0.0.1",
+  "description": "Pusher service wrapper for ember apps based on Ember.Evented.",
   "directories": {
     "doc": "doc",
     "test": "tests"
@@ -13,9 +13,18 @@
   },
   "repository": "",
   "engines": {
-    "node": ">= 0.10.0"
+    "node": ">= 0.12.2"
   },
-  "author": "",
+  "author": {
+    "name": "Michał Olejniczka",
+    "email": "michal.olejniczak@netguru.pl"
+  },
+  "contributors": [
+    {
+      "name": "Kuba Niechciał",
+      "email": "jakub.niechcial@netguru.pl"
+    }
+  ],
   "license": "MIT",
   "devDependencies": {
     "broccoli-asset-rev": "^2.2.0",
