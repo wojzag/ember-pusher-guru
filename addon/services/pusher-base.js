@@ -19,7 +19,6 @@ export default Service.extend(Ember.Evented, Checker, {
   setup() {
     this.checkEnv();
     this.pusher = new Pusher(this.get('pusherKey'), this._findOptions());
-    this.on('newEvent', this._handleEvent);
     this._setSubscriptionsEndEvents();
   },
 
@@ -29,14 +28,6 @@ export default Service.extend(Ember.Evented, Checker, {
       return { authEndpoint: endpoint, authTransport: 'jsonp' };
     } else {
       return;
-    }
-  },
-
-  _handleEvent(action, data) {
-    if (this[action].apply) {
-      this[action](data);
-    } else {
-      error(`No handler for event ${action} in Pusher wrapper`);
     }
   },
 
@@ -69,6 +60,6 @@ export default Service.extend(Ember.Evented, Checker, {
     if (this.pusher) {
       this.pusher.disconnect();
     }
-    this.off('newEvent', this._handleEvent);
+    // this.off('newEvent', this._handleEvent);
   }
 });
