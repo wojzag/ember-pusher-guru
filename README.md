@@ -5,7 +5,7 @@ Ember addon for easy integration with [Pusher](https://pusher.com/)
 ## Advantages
 
 - mechanism of integration is based on [Ember.Evented](http://emberjs.com/api/classes/Ember.Evented.html)
-- addon is a service which is easy to inject
+- addon is a mixin which is easy to include
 
 ## Installation
 ```bash
@@ -31,34 +31,35 @@ contentSecurityPolicy: {
 
 ## Usage
 
-You need to create own service which must be extended from Pusher service
+You need to create `pusher-config` service which must be extended from `pusher-base` service
 
 ```javascript
-# my-project/services/people-pusher.js
+# my-project/services/pusher-config.js
 
-import Pusher from '../services/pusher';
+import Pusher from '../services/pusher-base';
 
 export default Pusher.extend({
+  authEndpoint: 'http://backend.com/auth' // optional (for authentication)
   channelsData: [
-                 { channelName1: ['eventName1'] },
-                 { channelName2: ['eventName2', 'eventName3'] }
-                  ...
-                ],
-
-  eventName1(data) {
-    // actions;
-  },
-  ...
+    { channelName1: ['eventName1'] },
+    { channelName2: ['eventName2', 'eventName3'] }
+    ...
+  ]
 });
 ```
 
-And then inject your service wherever you want and use `get` for start listen
+And then use pusher-initializer mixin wherever you want and define connection events to method via `pusherActions`
 ```javascript
-export default Route.extend({
-  peoplePusher: inject.service(),
+import PusherInitializer from '../mixins/pusher-initializer'
 
-  init() {
-    this.get('peoplePusher');
+export default Route.extend(PusherInitializer, {
+  pusherActions: [
+    { eventName: 'methodName' },
+    { event2name: 'method2name' }
+  ],
+
+  methodName() {
+    // code
   }
 });
 ```

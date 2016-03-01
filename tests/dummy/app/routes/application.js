@@ -1,13 +1,24 @@
 /*global Pusher:true*/
 import Ember from 'ember';
+import PusherInitializer from 'ember-pusher-guru/mixins/pusher-initializer';
 
-const { Route, inject } = Ember;
+const { Route } = Ember;
 
-export default Route.extend({
-  animalsPusher: inject.service(),
+export default Route.extend(PusherInitializer, {
+  pusherActions: [
+    { swim: 'handleSwim' },
+    { cover: 'handleCover' },
+    { electroshock: 'handleElectroshock' }
+  ],
 
-  init() {
-    this.get('animalsPusher');
+  handleCover(data) {
+    Ember.$('#message').text(data.message);
+  },
+  handleElectroshock(data) {
+    Ember.$('#message').text(data.message);
+  },
+  handleSwim(data) {
+    Ember.$('#message').text(data.message);
   },
 
   actions: {
