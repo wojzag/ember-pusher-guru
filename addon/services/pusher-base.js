@@ -32,7 +32,12 @@ export default Service.extend(Ember.Evented, Checker, {
   _findOptions() {
     const endpoint = this.get('authEndpoint');
     if(endpoint) {
-      return { authEndpoint: endpoint, authTransport: 'jsonp', encrypted: true };
+      return {
+        authEndpoint: endpoint,
+        authTransport: 'jsonp',
+        encrypted: true,
+        auth: { params: this.get('authDataParams') },
+      };
     } else {
       return { encrypted: true };
     }
