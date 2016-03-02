@@ -16,18 +16,25 @@ export default Service.extend(Ember.Evented, Checker, {
     this.setup();
   },
 
+  willDestroy() {
+    if (this.get('pusher')) {
+      this.get('pusher').disconnect();
+    }
+  },
+
   setup() {
     this.checkEnv();
-    this.pusher = new Pusher(this.get('pusherKey'), this._findOptions());
+    this.set('pusher', new Pusher(this.get('pusherKey'), this._findOptions()));
+
     this._setSubscriptionsEndEvents();
   },
 
   _findOptions() {
     const endpoint = this.get('authEndpoint');
     if(endpoint) {
-      return { authEndpoint: endpoint, authTransport: 'jsonp' };
+      return { authEndpoint: endpoint, authTransport: 'jsonp', encrypted: true };
     } else {
-      return;
+      return { encrypted: true };
     }
   },
 
@@ -36,6 +43,10 @@ export default Service.extend(Ember.Evented, Checker, {
       const channelName = Object.keys(singleChannel)[0];
       const channel = this._addChannel(channelName);
       this._attachEventsToChannel(channel, channelName);
+    });
+
+    this.get('pusher').connection.bind('connected', (err, res) => {
+      return this._connected();
     });
   },
 
@@ -52,14 +63,20 @@ export default Service.extend(Ember.Evented, Checker, {
 
   _setEvent(channel, event) {
     channel.bind(event, (data) => {
-      bind(this, this.trigger('newEvent', event, data));
+      run(() => {
+        this.trigger('newEvent', event, data);
+      });
     });
   },
 
-  willDestroy() {
-    if (this.pusher) {
-      this.pusher.disconnect();
-    }
-    // this.off('newEvent', this._handleEvent);
-  }
+  _connected() {
+    this.set('socketId', this.get('pusher').connection.socket_id);
+    return this._addSocketIdToXHR();
+  },
+
+  _addSocketIdToXHR() {
+    Ember.$.ajaxPrefilter((options, originalOptions, xhr) => {
+      return xhr.setRequestHeader('X-Pusher-Socket', this.socketId);
+    });
+  },
 });
