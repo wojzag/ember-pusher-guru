@@ -1,6 +1,6 @@
 {
   "name": "ember-pusher-guru",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Pusher service wrapper for ember apps based on Ember.Evented.",
   "directories": {
     "doc": "doc",
