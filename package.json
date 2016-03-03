@@ -1,6 +1,6 @@
 {
   "name": "ember-pusher-guru",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Pusher service wrapper for ember apps based on Ember.Evented.",
   "directories": {
     "doc": "doc",
@@ -11,7 +11,7 @@
     "start": "ember server",
     "test": "ember try:testall"
   },
-  "repository": "",
+  "repository": "https://github.com/netguru/ember-pusher-guru",
   "engines": {
     "node": ">= 0.12.2"
   },
@@ -49,7 +49,7 @@
     "loader.js": "^4.0.0"
   },
   "keywords": [
-    "ember-addon"
+    "ember-addon", "pusher", "ember-pusher", "pusher-wrapper", "websockets", "ember"
   ],
   "dependencies": {
     "ember-cli-babel": "^5.1.5"
