@@ -31,10 +31,10 @@ contentSecurityPolicy: {
 
 ## Usage
 
-You need to create `pusher-config` service which must be extended from `pusher-base` service
+You need to create service which must be extended from `pusher-base` service:
 
 ```javascript
-# my-project/services/pusher-config.js
+# my-project/services/pusher.js
 
 import Pusher from '../services/pusher-base';
 
@@ -48,11 +48,16 @@ export default Pusher.extend({
 });
 ```
 
+You can create it as you want, but `pusher` is default.
+
 And then use pusher-initializer mixin wherever you want and define connection events to method via `pusherActions`
 ```javascript
 import PusherInitializer from '../mixins/pusher-initializer'
 
 export default Route.extend(PusherInitializer, {
+  // if you named your pusher service otherwise you need to inject it under the name `pusher`
+  // pusher: Ember.inject.service('my-pusher-service-name'),
+
   pusherActions: [
     { eventName: 'methodName' },
     { event2name: 'method2name' }

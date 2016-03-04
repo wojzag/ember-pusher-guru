@@ -2,15 +2,15 @@ import Ember from 'ember';
 const { inject } = Ember;
 
 export default Ember.Mixin.create({
-  pusherConfig: inject.service('pusher-config'),
+  pusher: inject.service(),
 
   init() {
     this._super(...arguments);
-    this.get('pusherConfig').on('newEvent', this, this._handleEvent);
+    this.get('pusher').on('newEvent', this, this._handleEvent);
   },
 
   willDestroy() {
-    this.get('pusherConfig').off('newEvent', this, this._handleEvent);
+    this.get('pusher').off('newEvent', this, this._handleEvent);
   },
 
   _handleEvent(event, data) {
