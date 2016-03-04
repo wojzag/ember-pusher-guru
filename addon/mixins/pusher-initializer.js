@@ -15,7 +15,7 @@ export default Ember.Mixin.create({
 
   _handleEvent(event, data) {
     const method = this._getEventMethodName(event);
-    if (this[method].apply) {
+    if (this[method] && this[method].apply) {
       this[method](data);
     }
   },
@@ -24,6 +24,6 @@ export default Ember.Mixin.create({
     const result = this.get('pusherActions').find((connection) => {
       return Object.keys(connection)[0] === event;
     });
-    return result[event];
+    return result && result[event];
   }
 });
