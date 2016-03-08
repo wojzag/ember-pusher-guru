@@ -1,8 +1,9 @@
 import Ember from 'ember';
 const { inject } = Ember;
+const { service } = inject;
 
 export default Ember.Mixin.create({
-  pusher: inject.service(),
+  pusher: service(),
 
   init() {
     this._super(...arguments);
