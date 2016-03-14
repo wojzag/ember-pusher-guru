@@ -14,7 +14,7 @@ export default Ember.Mixin.create({
   },
 
   _findWrongData(array) {
-    const wrong = array.find((channel) => {
+    const wrong = Ember.A(array).find((channel) => {
       return this._nonHashElements(channel) || this._detectEmptyHash(channel) || this._checkMissingEvents(channel);
     });
     return wrong === undefined;

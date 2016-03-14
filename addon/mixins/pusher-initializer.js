@@ -22,7 +22,7 @@ export default Ember.Mixin.create({
   },
 
   _getEventMethodName(event) {
-    const result = this.get('pusherActions').find((connection) => {
+    const result = Ember.A(this.get('pusherActions')).find((connection) => {
       return Object.keys(connection)[0] === event;
     });
     return result && result[event];
