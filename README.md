@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/netguru/ember-pusher-guru.svg?branch=master)](https://travis-ci.org/netguru/ember-pusher-guru)
+
 # Ember-pusher-guru
 
 Ember addon for easy integration with [Pusher](https://pusher.com/)
