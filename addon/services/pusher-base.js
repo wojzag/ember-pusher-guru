@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import Checker from 'ember-pusher-guru/mixins/checker';
 import { fetchEvents } from 'ember-pusher-guru/utils/extract-events';
+import getOwner from 'ember-getowner-polyfill';
 
-const { getOwner, computed, run, Logger, Service } = Ember;
+const { computed, run, Logger, Service } = Ember;
 const { bind } = run;
 const { error } = Logger;
 
