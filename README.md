@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/netguru/ember-pusher-guru.svg?branch=master)](https://travis-ci.org/netguru/ember-pusher-guru)
+[![Ember Observer Score](https://emberobserver.com/badges/ember-pusher-guru.svg)](https://emberobserver.com/addons/ember-pusher-guru)
+[![npm version](https://badge.fury.io/js/ember-pusher-guru.svg)](https://badge.fury.io/js/ember-pusher-guru)
 
 # Ember-pusher-guru
 
