@@ -47,7 +47,7 @@ export default Service.extend(Ember.Evented, Checker, {
   _findOptions() {
     const options = {};
     Object.keys(this.get('pusherConfig')).forEach((key) => {
-      if (Ember.get(this, `pusherConfig.${key}`)) {
+      if (Ember.get(this, `pusherConfig.${key}`) !== null) {
         options[key] = Ember.get(this, `pusherConfig.${key}`);
       }
     });
