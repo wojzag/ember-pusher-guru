@@ -9,7 +9,7 @@ module.exports = {
 
     app.import(app.bowerDirectory + '/pusher/dist/web/pusher.js');
     if (app.env === 'test') {
-      app.import(app.bowerDirectory + '/pusher-test-stub/dist/pusher-test-stub.js');
+      app.import(app.bowerDirectory + '/pusher-test-stub/build/bin/pusher-test-stub.js');
     }
   },
 };

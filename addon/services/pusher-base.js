@@ -32,7 +32,7 @@ export default Service.extend(Ember.Evented, Checker, {
   },
 
   willDestroy() {
-    if (this.get('pusher')) {
+    if (Ember.get(this, 'pusher.disconnect')) {
       this.get('pusher').disconnect();
     }
   },

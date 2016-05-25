@@ -7,8 +7,8 @@ import Ember from 'ember';
 moduleForAcceptance('Acceptance | pusher');
 
 function triggerEvent(event, message) {
-  const channel = Pusher.singleton;
-  channel.trigger('stringray', event, { message: message });
+  const channel = Pusher.instances[0].channel('stringray');
+  channel.emit(event, { message: message });
 }
 
 test('handles event that is listening for', function(assert) {
@@ -25,7 +25,13 @@ test('does not handle event if is not listening for', function(assert) {
   visit('/');
 
   andThen(function() {
-    triggerEvent('running', 'splash');
+    try {
+      triggerEvent('running', 'splash');
+    } catch(err) {
+      if (err.message !== 'Expecting a function in instanceof check, but got undefined') {
+        throw err;
+      }
+    }
     Ember.run.next(() => {
       assert.equal(find('#message').text(), '');
     });

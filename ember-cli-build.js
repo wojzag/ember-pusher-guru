@@ -9,7 +9,7 @@ module.exports = function(defaults) {
 
   app.import('bower_components/pusher/dist/web/pusher.js');
   if(app.env === 'test') {
-    app.import('bower_components/pusher-test-stub/dist/pusher-test-stub.js');
+    app.import('bower_components/pusher-test-stub/build/bin/pusher-test-stub.js');
   }
 
   return app.toTree();
