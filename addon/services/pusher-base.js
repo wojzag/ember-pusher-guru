@@ -57,7 +57,11 @@ export default Service.extend(Ember.Evented, Checker, {
       options.authTransport = 'jsonp';
       options.encrypted = true;
       options.auth = { params: this.get('authDataParams') };
-      Ember.deprecate('ember-pusher-guru: using `authEndpoint` outside `pusherConfig` is depreciated', true);
+      Ember.deprecate(
+        'ember-pusher-guru: using `authEndpoint` outside `pusherConfig` is depreciated',
+        true,
+        { id: 'ember-pusher-guru-authEndpoint', until: new Date(2016, 12, 31) }
+      );
     }
    return options;
   },
