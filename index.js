@@ -7,7 +7,7 @@ module.exports = {
   included: function(app) {
     this._super.included(app);
 
-    app.import(app.bowerDirectory + '/pusher/dist/pusher.js');
+    app.import(app.bowerDirectory + '/pusher/dist/web/pusher.js');
     if (app.env === 'test') {
       app.import(app.bowerDirectory + '/pusher-test-stub/dist/pusher-test-stub.js');
     }
