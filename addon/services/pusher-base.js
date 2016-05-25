@@ -11,6 +11,20 @@ export default Service.extend(Ember.Evented, Checker, {
   pusher: null,
   pusherKey: null,
 
+  pusherConfig: {
+    authEndpoint: null,
+    authDataParams: null,
+    authDataHeaders: null,
+    encrypted: true,
+    cluster: null,
+    disableStats: null,
+    enabledTransports: null,
+    disabledTransports: null,
+    ignoreNullOrigin: null,
+    activityTimeout: null,
+    pongTimeout: null,
+  },
+
   init() {
     this._super(...arguments);
     this.set('pusherKey', getOwner(this).resolveRegistration('config:environment').pusherKey);
@@ -31,17 +45,21 @@ export default Service.extend(Ember.Evented, Checker, {
   },
 
   _findOptions() {
+    const options = {};
+    Object.keys(this.get('pusherConfig')).forEach((key) => {
+      if (Ember.get(this, `pusherConfig.${key}`)) {
+        options[key] = Ember.get(this, `pusherConfig.${key}`);
+      }
+    });
     const endpoint = this.get('authEndpoint');
     if(endpoint) {
-      return {
-        authEndpoint: endpoint,
-        authTransport: 'jsonp',
-        encrypted: true,
-        auth: { params: this.get('authDataParams') },
-      };
-    } else {
-      return { encrypted: true };
+      options.authEndpoint = endpoint;
+      options.authTransport = 'jsonp';
+      options.encrypted = true;
+      options.auth = { params: this.get('authDataParams') };
+      Ember.deprecate('ember-pusher-guru: using `authEndpoint` outside `pusherConfig` is depreciated', true);
     }
+   return options;
   },
 
   _setSubscriptionsEndEvents() {
