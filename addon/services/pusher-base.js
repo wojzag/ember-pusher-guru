@@ -3,7 +3,7 @@ import Checker from 'ember-pusher-guru/mixins/checker';
 import { fetchEvents } from 'ember-pusher-guru/utils/extract-events';
 import getOwner from 'ember-getowner-polyfill';
 
-const { computed, run, Logger, Service } = Ember;
+const { get, computed, run, Logger, Service } = Ember;
 const { bind } = run;
 const { error } = Logger;
 
@@ -32,7 +32,7 @@ export default Service.extend(Ember.Evented, Checker, {
   },
 
   willDestroy() {
-    if (Ember.get(this, 'pusher.disconnect')) {
+    if (get(this, 'pusher.disconnect')) {
       this.get('pusher').disconnect();
     }
   },
@@ -47,8 +47,8 @@ export default Service.extend(Ember.Evented, Checker, {
   _findOptions() {
     const options = {};
     Object.keys(this.get('pusherConfig')).forEach((key) => {
-      if (Ember.get(this, `pusherConfig.${key}`) !== null) {
-        options[key] = Ember.get(this, `pusherConfig.${key}`);
+      if (get(this, `pusherConfig.${key}`) !== null) {
+        options[key] = get(this, `pusherConfig.${key}`);
       }
     });
     const endpoint = this.get('authEndpoint');
