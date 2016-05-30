@@ -3,13 +3,27 @@ import Checker from 'ember-pusher-guru/mixins/checker';
 import { fetchEvents } from 'ember-pusher-guru/utils/extract-events';
 import getOwner from 'ember-getowner-polyfill';
 
-const { computed, run, Logger, Service } = Ember;
+const { get, computed, run, Logger, Service } = Ember;
 const { bind } = run;
 const { error } = Logger;
 
 export default Service.extend(Ember.Evented, Checker, {
   pusher: null,
   pusherKey: null,
+
+  pusherConfig: {
+    authEndpoint: null,
+    authDataParams: null,
+    authDataHeaders: null,
+    encrypted: true,
+    cluster: null,
+    disableStats: null,
+    enabledTransports: null,
+    disabledTransports: null,
+    ignoreNullOrigin: null,
+    activityTimeout: null,
+    pongTimeout: null,
+  },
 
   init() {
     this._super(...arguments);
@@ -18,7 +32,7 @@ export default Service.extend(Ember.Evented, Checker, {
   },
 
   willDestroy() {
-    if (this.get('pusher')) {
+    if (get(this, 'pusher.disconnect')) {
       this.get('pusher').disconnect();
     }
   },
@@ -31,17 +45,25 @@ export default Service.extend(Ember.Evented, Checker, {
   },
 
   _findOptions() {
+    const options = {};
+    Object.keys(this.get('pusherConfig')).forEach((key) => {
+      if (get(this, `pusherConfig.${key}`) !== null) {
+        options[key] = get(this, `pusherConfig.${key}`);
+      }
+    });
     const endpoint = this.get('authEndpoint');
     if(endpoint) {
-      return {
-        authEndpoint: endpoint,
-        authTransport: 'jsonp',
-        encrypted: true,
-        auth: { params: this.get('authDataParams') },
-      };
-    } else {
-      return { encrypted: true };
+      options.authEndpoint = endpoint;
+      options.authTransport = 'jsonp';
+      options.encrypted = true;
+      options.auth = { params: this.get('authDataParams') };
+      Ember.deprecate(
+        'ember-pusher-guru: using `authEndpoint` outside `pusherConfig` is depreciated',
+        true,
+        { id: 'ember-pusher-guru-authEndpoint', until: new Date(2016, 12, 31) }
+      );
     }
+   return options;
   },
 
   _setSubscriptionsEndEvents() {
