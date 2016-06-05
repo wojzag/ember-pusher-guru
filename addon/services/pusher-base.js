@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Checker from 'ember-pusher-guru/mixins/checker';
 import { fetchEvents } from 'ember-pusher-guru/utils/extract-events';
+import { channelsDiff } from 'ember-pusher-guru/utils/channels-diff';
 import getOwner from 'ember-getowner-polyfill';
 
 const { get, computed, run, Logger, Service } = Ember;
@@ -41,7 +42,9 @@ export default Service.extend(Ember.Evented, Checker, {
     this.checkEnv();
     this.set('pusher', new Pusher(this.get('pusherKey'), this._findOptions()));
     this._subscribeChannels(this.get('channelsData'));
-    this._connect();
+    this.get('pusher').connection.bind('connected', (err, res) => {
+      return this._connected();
+    });
   },
 
   updateChannelsData(newChannelsData) {
@@ -71,25 +74,12 @@ export default Service.extend(Ember.Evented, Checker, {
   },
 
   _manageChannelsChange(oldChannelsData, newChannelsData) {
-    const oldChannels = oldChannelsData.map(channel => Object.keys(channel)[0]);
-    const newChannels = newChannelsData.map(channel => Object.keys(channel)[0]);
-    const channelsToUnsubscribe = oldChannelsData
-      .filter((channel) => this._channelIncluded(channel, newChannels));
-    const channelsToSubscribe = newChannelsData
-      .filter((channel) => this._channelIncluded(channel, oldChannels));
+    const {
+      channelsToSubscribe,
+      channelsToUnsubscribe
+    } = channelsDiff(oldChannelsData, newChannelsData);
     this._subscribeChannels(channelsToSubscribe);
     this._unsubscribeChannels(channelsToUnsubscribe);
-  },
-
-  _channelIncluded(channelData, channelsList) {
-    const [channelName] = Object.keys(channelData);
-    return channelsList.indexOf(channelName) < 0;
-  },
-
-  _connect() {
-    this.get('pusher').connection.bind('connected', (err, res) => {
-      return this._connected();
-    });
   },
 
   _subscribeChannels(channelsData) {
