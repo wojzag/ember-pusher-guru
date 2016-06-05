@@ -40,8 +40,12 @@ export default Service.extend(Ember.Evented, Checker, {
   setup() {
     this.checkEnv();
     this.set('pusher', new Pusher(this.get('pusherKey'), this._findOptions()));
+    this._subscribeChannels(this.get('channelsData'));
+    this._connect();
+  },
 
-    this._setSubscriptionsEndEvents();
+  updateChannelsData(newChannelsData) {
+    this._manageChannelsChange(this.get('channelsData'), newChannelsData);
   },
 
   _findOptions() {
@@ -66,15 +70,40 @@ export default Service.extend(Ember.Evented, Checker, {
    return options;
   },
 
-  _setSubscriptionsEndEvents() {
-    this.get('channelsData').forEach((singleChannel) => {
-      const channelName = Object.keys(singleChannel)[0];
-      const channel = this._addChannel(channelName);
-      this._attachEventsToChannel(channel, channelName);
-    });
+  _manageChannelsChange(oldChannelsData, newChannelsData) {
+    const oldChannels = oldChannelsData.map(channel => Object.keys(channel)[0]);
+    const newChannels = newChannelsData.map(channel => Object.keys(channel)[0]);
+    const channelsToUnsubscribe = oldChannelsData
+      .filter((channel) => this._channelIncluded(channel, newChannels));
+    const channelsToSubscribe = newChannelsData
+      .filter((channel) => this._channelIncluded(channel, oldChannels));
+    this._subscribeChannels(channelsToSubscribe);
+    this._unsubscribeChannels(channelsToUnsubscribe);
+  },
 
+  _channelIncluded(channelData, channelsList) {
+    const [channelName] = Object.keys(channelData);
+    return channelsList.indexOf(channelName) < 0;
+  },
+
+  _connect() {
     this.get('pusher').connection.bind('connected', (err, res) => {
       return this._connected();
+    });
+  },
+
+  _subscribeChannels(channelsData) {
+    channelsData.forEach((singleChannel) => {
+      const channelName = Object.keys(singleChannel)[0];
+      const channel = this._addChannel(channelName);
+      this._attachEventsToChannel(channel, channelName, channelsData);
+    });
+  },
+
+  _unsubscribeChannels(channelsData) {
+    const channels = channelsData.map(channel => Object.keys(channel)[0]);
+    channels.forEach((channel) => {
+      return this.get('pusher').unsubscribe(channel);
     });
   },
 
@@ -82,8 +111,8 @@ export default Service.extend(Ember.Evented, Checker, {
     return this.get('pusher').subscribe(name);
   },
 
-  _attachEventsToChannel(channel, channelName) {
-    const events = fetchEvents(this.get('channelsData'), channelName);
+  _attachEventsToChannel(channel, channelName, data) {
+    const events = fetchEvents(data, channelName);
     events.forEach((event) => {
       this._setEvent(channel, event);
     });
