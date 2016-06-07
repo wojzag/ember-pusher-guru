@@ -33,6 +33,12 @@ contentSecurityPolicy: {
 }
 ```
 
+Then you need to add this line:
+```html
+<script type="text/javascript">window.ALLOW_PUSHER_OVERRIDE = true;</script>
+```
+to your `tests/index.html` right after the `body` tag. This will allow `pusher-test-stub` to work and run your tests.
+
 ## Usage
 
 You need to create service which must be extended from `pusher-base` service:
