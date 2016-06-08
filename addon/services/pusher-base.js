@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import Checker from 'ember-pusher-guru/mixins/checker';
 import { fetchEvents } from 'ember-pusher-guru/utils/extract-events';
-import { channelsDiff } from 'ember-pusher-guru/utils/channels-diff';
+import { channelsDiff, removeChannel } from 'ember-pusher-guru/utils/channels-diff';
 import getOwner from 'ember-getowner-polyfill';
 
-const { get, computed, run, Logger, Service } = Ember;
+const { get, computed, run, Logger, Service, isArray } = Ember;
 const { bind } = run;
 const { error } = Logger;
 
@@ -48,7 +48,24 @@ export default Service.extend(Ember.Evented, Checker, {
   },
 
   updateChannelsData(newChannelsData) {
+    this._checkDataStructure(newChannelsData);
     this._manageChannelsChange(this.get('channelsData'), newChannelsData);
+  },
+
+  removeChannel(channelName) {
+    this._manageChannelsChange(
+      this.get('channelsData'),
+      removeChannel(this.get('channelsData'), channelName)
+    );
+  },
+
+  addChannelsData(newChannelsData) {
+    const channelData = this.get('channelsData');
+    this._checkDataStructure(newChannelsData);
+    const updatedChannelsData = isArray(newChannelsData) ?
+      [...channelData, ...newChannelsData] :
+      [...channelData, newChannelsData];
+    this._manageChannelsChange(channelData, updatedChannelsData);
   },
 
   _findOptions() {

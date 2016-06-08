@@ -3,6 +3,12 @@ function channelIncluded(channelData, channelsList) {
   return channelsList.indexOf(channelName) < 0;
 }
 
+export function removeChannel(channelsData, channelName) {
+  return channelsData.filter((channel) => {
+    return Object.keys(channel)[0] !== channelName;
+  });
+}
+
 export function channelsDiff(oldChannelsData, newChannelsData) {
   const oldChannels = oldChannelsData.map(channel => Object.keys(channel)[0]);
   const newChannels = newChannelsData.map(channel => Object.keys(channel)[0]);

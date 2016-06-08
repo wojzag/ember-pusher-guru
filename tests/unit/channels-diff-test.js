@@ -1,4 +1,4 @@
-import { channelsDiff } from 'ember-pusher-guru/utils/channels-diff';
+import { channelsDiff, removeChannel } from 'ember-pusher-guru/utils/channels-diff';
 import { module, test } from 'qunit';
 
 module('Unit | Utility | channelsDiff');
@@ -40,4 +40,15 @@ test('it properly diffs mixed', function(assert){
     diff.channelsToSubscribe,
     [{ foo_channel: ['foo_event'] }, { new_channel: ['new_event', 'new_event2'] }]
   );
+});
+
+test('it properly removes channel', function(assert) {
+  const channelsData = [
+    { test_channel: ['test_event'] },
+    { my_channel: ['my_event'] }
+  ];
+
+  const newChannelsData = removeChannel(channelsData, 'my_channel');
+
+  assert.deepEqual(newChannelsData, [{ test_channel: ['test_event'] }]);
 });

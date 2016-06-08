@@ -101,3 +101,49 @@ test('it changes the channels list instead of only adding to it', function(asser
   const registeredChannels = Object.keys(pusherService.pusher._channels);
   assert.deepEqual(registeredChannels, ['new_channel']);
 });
+
+test('it removes and unsubscribes from channels when removeChannel called', function(assert) {
+  setupDummyData(pusherService);
+  const channelsData = [
+    { my_channel: ['test_data'] },
+    { test_channel: ['test_event'] }
+  ];
+  pusherService.set('channelsData', channelsData);
+  pusherService.setup();
+  stubUnsubscribe(pusherService.get('pusher'));
+  pusherService.removeChannel('my_channel');
+  const registeredChannels = Object.keys(pusherService.pusher._channels);
+  assert.deepEqual(registeredChannels, ['test_channel']);
+});
+
+test(
+  'it adds and subscribes to channels with addChannelsData (object form)',
+  function(assert) {
+    setupDummyData(pusherService);
+    const channelsData = [
+      { test_channel: ['test_event'] }
+    ];
+    pusherService.set('channelsData', channelsData);
+    pusherService.setup();
+    stubUnsubscribe(pusherService.get('pusher'));
+    pusherService.addChannelsData({ my_channel: ['test_data'] });
+    const registeredChannels = Object.keys(pusherService.pusher._channels);
+    assert.deepEqual(registeredChannels, ['test_channel', 'my_channel']);
+  }
+);
+
+test(
+  'it adds and subscribes to channels with addChannelsData (array form)',
+  function(assert) {
+    setupDummyData(pusherService);
+    const channelsData = [
+      { test_channel: ['test_event'] }
+    ];
+    pusherService.set('channelsData', channelsData);
+    pusherService.setup();
+    stubUnsubscribe(pusherService.get('pusher'));
+    pusherService.addChannelsData([{ my_channel: ['test_data'] }]);
+    const registeredChannels = Object.keys(pusherService.pusher._channels);
+    assert.deepEqual(registeredChannels, ['test_channel', 'my_channel']);
+  }
+ );
