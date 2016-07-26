@@ -15,7 +15,8 @@ export default PusherBase.extend({
     return [
       firstChannel,
       { eel: ['electroshock', 'swim'] },
-      { 'private-coconut': ['fall'] }
+      { 'private-coconut': ['fall'] },
+      { dynamic_channel: ['dynamic_event'] }
     ];
   }),
 

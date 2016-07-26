@@ -21,6 +21,12 @@ test('handles event that is listening for', function(assert) {
       'New event',
       'it handles dynamically added events'
     );
+    triggerEvent('dynamic_event', 'New event', 'dynamic_channel');
+    assert.equal(
+      find('#message').text(),
+      'Event: dynamic_event | Message: New event',
+      'it handles events without declared subscription'
+    );
   });
 });
 
