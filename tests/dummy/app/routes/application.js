@@ -14,6 +14,10 @@ export default Route.extend(PusherInitializer, {
     { new_event: 'handleNewEvent' }
   ],
 
+  onPusherAction(event, data) {
+    Ember.$('#message').text(`Event: ${event} | Message: ${data.message}`);
+  },
+
   init() {
     this._super(...arguments);
     this.get('pusher').addChannelsData(
