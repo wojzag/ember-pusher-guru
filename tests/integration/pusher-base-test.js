@@ -1,6 +1,8 @@
 import { test } from 'qunit';
 import moduleForAcceptance from '../../tests/helpers/module-for-acceptance';
 
+import PusherBase from 'ember-pusher-guru/services/pusher-base';
+
 var pusherService;
 
 var exampleConfig = {
@@ -147,3 +149,26 @@ test(
     assert.deepEqual(registeredChannels, ['test_channel', 'my_channel']);
   }
  );
+
+test('it auto-connects by default', function(assert) {
+  var derivedPusherService = PusherBase.extend({
+    setup() {
+      this.set('setupWasCalled', true);
+    }
+  });
+  this.application.register('service:my-pusher', derivedPusherService);
+  var derivedServiceInstance = this.application.__container__.lookup('service:my-pusher');
+  assert.ok(derivedServiceInstance.get('setupWasCalled'));
+});
+
+test('it can be configured not to auto-connect', function(assert) {
+  var derivedPusherService = PusherBase.extend({
+    autoConnect: false,
+    setup() {
+      this.set('setupWasCalled', true);
+    }
+  });
+  this.application.register('service:my-pusher', derivedPusherService);
+  var derivedServiceInstance = this.application.__container__.lookup('service:my-pusher');
+  assert.notOk(derivedServiceInstance.get('setupWasCalled'));
+});

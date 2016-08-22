@@ -11,6 +11,7 @@ const { error } = Logger;
 export default Service.extend(Ember.Evented, Checker, {
   pusher: null,
   pusherKey: null,
+  autoConnect: true,
 
   pusherConfig: {
     authEndpoint: null,
@@ -29,7 +30,9 @@ export default Service.extend(Ember.Evented, Checker, {
   init() {
     this._super(...arguments);
     this.set('pusherKey', getOwner(this).resolveRegistration('config:environment').pusherKey);
-    this.setup();
+    if(this.get('autoConnect')) {
+      this.setup();
+    }
   },
 
   willDestroy() {
