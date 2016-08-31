@@ -44,12 +44,12 @@ to your `tests/index.html` right after the `body` tag. This will allow `pusher-t
 You need to create service which must be extended from `pusher-base` service:
 
 ```javascript
-# my-project/services/pusher.js
+# my-project/app/services/pusher.js
 
 import Pusher from 'ember-pusher-guru/services/pusher-base';
 
 export default Pusher.extend({
-  authEndpoint: 'http://backend.com/auth' // optional (for authentication)
+  authEndpoint: 'http://backend.com/auth', // optional (for authentication)
   channelsData: [
     { channelName1: ['eventName1'] },
     { channelName2: ['eventName2', 'eventName3'] }
